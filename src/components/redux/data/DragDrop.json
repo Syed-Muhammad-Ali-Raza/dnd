@@ -1,0 +1,46 @@
+[
+    {
+      "id": 1,
+      "type": "radio",
+      "label": "Choose an option",
+      "options": ["Make ", "Female "],
+      "initialValue": "",
+      "value": "",
+      "position": 0
+    },
+    {
+      "id": 2,
+      "type": "textarea",
+      "label": "Enter your comments",
+      "initialValue": "",
+      "value": "",
+      "position": 0
+    },
+    {
+      "id": 3,
+      "type": "input",
+      "subtype": "text",
+      "label": "Enter your name",
+      "initialValue": "",
+      "value": "",
+      "position": 0
+    },
+    {
+      "id": 4,
+      "type": "dropdown",
+      "label": "Select a country",
+      "options": ["United States", "Canada", "United Kingdom", "Australia"],
+      "initialValue": "",
+      "value": "",
+      "position": 0
+    },
+    {
+      "id": 5,
+      "type": "email",
+      "label": "Enter your email",
+      "initialValue": "",
+      "value": "",
+      "position": 0
+    }
+  ]
+  
