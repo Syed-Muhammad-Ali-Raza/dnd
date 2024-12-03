@@ -2,8 +2,8 @@
     {
       "id": 1,
       "type": "radio",
-      "label": "Choose an option",
-      "options": ["Make ", "Female "],
+      "label": "Radio",
+      "options": ["option 1 ", "option 2 " , "option 3"],
       "initialValue": "",
       "value": "",
       "position": 0
@@ -11,16 +11,16 @@
     {
       "id": 2,
       "type": "textarea",
-      "label": "Enter your comments",
+      "label": "Textarea",
       "initialValue": "",
       "value": "",
       "position": 0
     },
     {
       "id": 3,
-      "type": "input",
+      "type": "text",
       "subtype": "text",
-      "label": "Enter your name",
+      "label": "text",
       "initialValue": "",
       "value": "",
       "position": 0
@@ -28,8 +28,8 @@
     {
       "id": 4,
       "type": "dropdown",
-      "label": "Select a country",
-      "options": ["United States", "Canada", "United Kingdom", "Australia"],
+      "label": "dropdown",
+      "options": ["Opt 1", "Opt 2", "Opt 3"],
       "initialValue": "",
       "value": "",
       "position": 0
@@ -37,7 +37,7 @@
     {
       "id": 5,
       "type": "email",
-      "label": "Enter your email",
+      "label": " email",
       "initialValue": "",
       "value": "",
       "position": 0

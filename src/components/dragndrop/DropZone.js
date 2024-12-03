@@ -5,6 +5,7 @@ import "./Dnd.css";
 
 const DropZone = ({ droppedFields, setDroppedFields }) => {
   const [formFields, setFormFields] = useState([]);
+  const [editLabelIndex, setEditLabelIndex] = useState(null);
   const [editPlaceholderIndex, setEditPlaceholderIndex] = useState(null);
 
   const [{ isOver }, drop] = useDrop(() => ({
@@ -84,12 +85,53 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
         }}
       >
         {formFields.length === 0 ? (
-          <p>Drag  fields here...</p>
+          <p>Drag fields here...</p>
         ) : (
           formFields.map((field, index) => (
-            <div key={index} style={{ marginBottom: "20px", border: "1px solid #ccc", padding: "10px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <label>{field.label}</label>
+            <div
+              key={index}
+              style={{
+                marginBottom: "20px",
+                border: "1px solid #ccc",
+                padding: "10px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {editLabelIndex === index ? (
+                  <input
+                    type="text"
+                    value={field.label}
+                    onChange={(e) => {
+                      const updatedFields = [...formFields];
+                      updatedFields[index].label = e.target.value;
+                      setFormFields(updatedFields);
+                    }}
+                    onBlur={() => setEditLabelIndex(null)}
+                    style={{
+                      marginBottom: "10px",
+                      flex: 1,
+                    }}
+                  />
+                ) : (
+                  <label
+                    onClick={() => setEditLabelIndex(index)}
+                    className ="tooltip"
+                    style={{
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                      color: "#007BFF",
+                    }}
+                  >
+               {field.label}
+               <span className="tooltiptext">  change label </span>
+                  </label>
+                )}
                 <FaTrashAlt
                   onClick={() => {
                     const updatedFields = formFields.filter((_, i) => i !== index);
@@ -102,7 +144,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                 />
               </div>
 
-              {[ "text", "email", "textarea"].includes(field.type) && (
+              {["text", "email", "textarea"].includes(field.type) && (
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <input
                     type={field.type === "textarea" ? "textarea" : "text"}
@@ -130,7 +172,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                         updatedFields[index].placeholder = e.target.value;
                         setFormFields(updatedFields);
                       }}
-                      onBlur={() => setEditPlaceholderIndex(null)} 
+                      onBlur={() => setEditPlaceholderIndex(null)}
                       style={{
                         marginBottom: "10px",
                         display: "inline-block",
@@ -150,105 +192,147 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                 </div>
               )}
 
-              {field.type === "dropdown" && (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <select
-                    value={field.value}
-                    onChange={(e) => {
-                      const updatedFields = [...formFields];
-                      updatedFields[index].value = e.target.value;
-                      setFormFields(updatedFields);
-                    }}
-                    style={{
-                      marginBottom: "10px",
-                      marginRight: "10px",
-                      flex: 1,
-                    }}
-                  >
-                    {field.options.map((opt, i) => (
-                      <option key={i} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-                  {field.options.map((opt, i) => (
-                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <input
-                        type="text"
-                        value={opt}
-                        onChange={(e) => handleEditOption(index, i, e.target.value)}
-                        style={{
-                          marginBottom: "10px",
-                          marginRight: "10px",
-                          flex: 1,
-                        }}
-                      />
-                      <FaTrashAlt
-                        onClick={() => handleDeleteOption(index, i)}
-                        style={{
-                          cursor: "pointer",
-                          color: "#FF5733",
-                        }}
-                      />
-                    </div>
-                  ))}
-                  <input
-                    type="text"
-                    placeholder="Add option"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && e.target.value.trim()) {
-                        const updatedOptions = [...field.options, e.target.value.trim()];
-                        updateFieldOptions(index, updatedOptions);
-                        e.target.value = "";
-                      }
-                    }}
-                    style={{
-                      marginBottom: "10px",
-                      marginRight: "10px",
-                      flex: 1,
-                    }}
-                  />
-                </div>
-              )}
+{field.type === "dropdown" && (
+  <div style={{ display: "flex", flexDirection: "column" }}>
+    {/* Dropdown options */}
+    <select
+      value={field.value}
+      onChange={(e) => {
+        const updatedFields = [...formFields];
+        updatedFields[index].value = e.target.value;
+        setFormFields(updatedFields);
+      }}
+      style={{
+        marginBottom: "10px",
+        padding: "8px",
+        flex: 1,
+      }}
+    >
+      <option value="" disabled>
+        Select an option
+      </option>
+      {field.options.map((opt, i) => (
+        <option key={i} value={opt}>
+          {opt}
+        </option>
+      ))}
+    </select>
 
-              {field.type === "radio" && (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {field.options.map((opt, i) => (
-                    <label key={i} style={{ marginBottom: "5px", display: "flex", alignItems: "center" }}>
-                      <input
-                        type="radio"
-                        name={`radio-${index}`}
-                        checked={field.value === opt}
-                        onChange={() => {
-                          const updatedFields = [...formFields];
-                          updatedFields[index].value = opt;
-                          setFormFields(updatedFields);
-                        }}
-                        style={{
-                          marginRight: "5px",
-                        }}
-                      />
-                      {opt}
-                    </label>
-                  ))}
-                  <input
-                    type="text"
-                    placeholder="Add option"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && e.target.value.trim()) {
-                        const updatedOptions = [...field.options, e.target.value.trim()];
-                        updateFieldOptions(index, updatedOptions);
-                        e.target.value = "";
-                      }
-                    }}
-                    style={{
-                      marginBottom: "10px",
-                      marginRight: "10px",
-                      flex: 1,
-                    }}
-                  />
-                </div>
-              )}
+    {/* Editable dropdown options */}
+    {field.options.map((opt, i) => (
+      <div
+        key={i}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "5px",
+        }}
+      >
+        <input
+          type="text"
+          value={opt}
+          onChange={(e) => handleEditOption(index, i, e.target.value)}
+          style={{
+            flex: 1,
+            marginRight: "10px",
+            padding: "5px",
+          }}
+        />
+        <FaTrashAlt
+          onClick={() => handleDeleteOption(index, i)}
+          style={{
+            cursor: "pointer",
+            color: "#FF5733",
+          }}
+        />
+      </div>
+    ))}
+
+    {/* Add new dropdown option */}
+    <input
+      type="text"
+      placeholder="Add option"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && e.target.value.trim()) {
+          const updatedOptions = [...field.options, e.target.value.trim()];
+          updateFieldOptions(index, updatedOptions);
+          e.target.value = "";
+        }
+      }}
+      style={{
+        marginTop: "10px",
+        padding: "8px",
+        flex: 1,
+      }}
+    />
+  </div>
+)}
+
+{field.type === "radio" && (
+  <div style={{ display: "flex", flexDirection: "column" }}>
+    {/* Radio button options */}
+    {field.options.map((opt, i) => (
+      <label
+        key={i}
+        style={{
+          marginBottom: "5px",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <input
+          type="radio"
+          name={`radio-${index}`}
+          checked={field.value === opt}
+          onChange={() => {
+            const updatedFields = [...formFields];
+            updatedFields[index].value = opt;
+            setFormFields(updatedFields);
+          }}
+          style={{
+            marginRight: "5px",
+          }}
+        />
+        <input
+          type="text"
+          value={opt}
+          onChange={(e) => handleEditOption(index, i, e.target.value)}
+          style={{
+            flex: 1,
+            padding: "5px",
+            marginRight: "10px",
+          }}
+        />
+        <FaTrashAlt
+          onClick={() => handleDeleteOption(index, i)}
+          style={{
+            cursor: "pointer",
+            color: "#FF5733",
+          }}
+        />
+      </label>
+    ))}
+
+    {/* Add new radio button option */}
+    <input
+      type="text"
+      placeholder="Add option"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && e.target.value.trim()) {
+          const updatedOptions = [...field.options, e.target.value.trim()];
+          updateFieldOptions(index, updatedOptions);
+          e.target.value = "";
+        }
+      }}
+      style={{
+        marginTop: "10px",
+        padding: "8px",
+        flex: 1,
+      }}
+    />
+  </div>
+)}
+
             </div>
           ))
         )}
@@ -258,7 +342,10 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
         <button onClick={saveForm} style={{ marginRight: "10px" }}>
           Save
         </button>
-        <button onClick={resetForm} style={{ backgroundColor: "#f44336", color: "#fff" }}>
+        <button
+          onClick={resetForm}
+          style={{ backgroundColor: "#f44336", color: "#fff" }}
+        >
           Reset
         </button>
       </div>
