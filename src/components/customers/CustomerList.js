@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './CustomerList.css';
+import { FaTrashAlt, FaEdit } from "react-icons/fa";
 
 function CustomerList() {
   const [customerData, setCustomerData] = useState([]);
@@ -22,29 +23,47 @@ function CustomerList() {
               <th>Label</th>
               <th>Type</th>
               <th>Value</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {customerData.length > 0 ? (
-              customerData.map((form) => (
-                <React.Fragment key={form.id}>
-                  <tr>
-                    <td rowSpan={Object.entries(form.data).length + 1}>
-                      {form.id}
-                    </td>
-                  </tr>
-                  {Object.entries(form.data).map(([key, value], index) => (
-                    <tr key={key}>
-                      <td>{value.label}</td>
-                      <td>{value.type}</td>
-                      <td>{value.value}</td>
-                    </tr>
-                  ))}
-                </React.Fragment>
-              ))
+              customerData.map((form) => {
+                // Calculate the number of rows for the current form
+                const rowCount = Object.entries(form.data).length;
+
+                return (
+                  <React.Fragment key={form.id}>
+                    {/* Render Form ID only for the first row of this Form */}
+                    {Object.entries(form.data).map(([key, value], index) => (
+                      <tr key={key}>
+                        {index === 0 && (
+                          <td rowSpan={rowCount}>{form.id}</td>
+                        )}
+                        <td>{value.label}</td>
+                        <td>{value.type}</td>
+                        <td>{value.value}</td>
+                        {/* Show Edit/Delete buttons only once per form ID */}
+                        {index === 0 && (
+                          <td rowSpan={rowCount}>
+                            <FaEdit
+                              className="action-icon"
+                              onClick={() => { console.log('Edit clicked') }}
+                            />
+                            <FaTrashAlt
+                              className="action-icon"
+                              onClick={() => { console.log('Delete clicked') }}
+                            />
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                  </React.Fragment>
+                );
+              })
             ) : (
               <tr>
-                <td colSpan="4" className="no-data">
+                <td colSpan="5" className="no-data">
                   No customer data available
                 </td>
               </tr>
