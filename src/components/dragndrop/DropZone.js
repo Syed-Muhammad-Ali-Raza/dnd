@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { useDrop } from "react-dnd";
 import { FaTrashAlt, FaEdit, FaCog } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { addField, updateField, resetForm } from "../redux/FormSlice"; // Adjust path as needed
 import "./Dnd.css";
 
 const DropZone = ({ droppedFields, setDroppedFields }) => {
-  const [formFields, setFormFields] = useState([]);
+  const dispatch = useDispatch();
+  const formFields = useSelector((state) => state.form.formFields);
   const [editLabelIndex, setEditLabelIndex] = useState(null);
   const [editPlaceholderIndex, setEditPlaceholderIndex] = useState(null);
 
@@ -18,14 +21,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
 
   const addFieldToForm = (field) => {
     if (!droppedFields.has(field.id)) {
-      const updatedField = {
-        ...field,
-        value: field.initialValue || "",
-        placeholder: field.placeholder || "Enter text...",
-        options: field.options || [],
-        position: formFields.length + 1,
-      };
-      setFormFields((prev) => [...prev, updatedField]);
+      dispatch(addField(field)); 
       setDroppedFields((prev) => new Set(prev).add(field.id));
     }
   };
@@ -47,30 +43,22 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
     console.log("Saved Form Data:", formData);
   };
 
-  const resetForm = () => {
-    setFormFields([]);
-    setDroppedFields(new Set());
-  };
-
-  const updateFieldOptions = (index, updatedOptions) => {
-    const updatedFields = [...formFields];
-    updatedFields[index].options = updatedOptions;
-    setFormFields(updatedFields);
-  };
-
   const handleDeleteOption = (fieldIndex, optionIndex) => {
-    const updatedFields = [...formFields];
-    const updatedOptions = updatedFields[fieldIndex].options.filter(
+    const updatedOptions = formFields[fieldIndex].options.filter(
       (_, i) => i !== optionIndex
     );
-    updatedFields[fieldIndex].options = updatedOptions;
-    setFormFields(updatedFields);
+    dispatch(updateField({ id: formFields[fieldIndex].id, name: "options", value: updatedOptions }));
   };
 
   const handleEditOption = (fieldIndex, optionIndex, newValue) => {
-    const updatedFields = [...formFields];
-    updatedFields[fieldIndex].options[optionIndex] = newValue;
-    setFormFields(updatedFields);
+    const updatedOptions = [...formFields[fieldIndex].options];
+    updatedOptions[optionIndex] = newValue;
+    dispatch(updateField({ id: formFields[fieldIndex].id, name: "options", value: updatedOptions }));
+  };
+
+  const resetFormState = () => {
+    dispatch(resetForm()); // Dispatch resetForm action
+    setDroppedFields(new Set());
   };
 
   return (
@@ -108,9 +96,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                     type="text"
                     value={field.label}
                     onChange={(e) => {
-                      const updatedFields = [...formFields];
-                      updatedFields[index].label = e.target.value;
-                      setFormFields(updatedFields);
+                      dispatch(updateField({ id: field.id, name: "label", value: e.target.value }));
                     }}
                     onBlur={() => setEditLabelIndex(null)}
                     style={{
@@ -121,21 +107,21 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                 ) : (
                   <label
                     onClick={() => setEditLabelIndex(index)}
-                    className ="tooltip"
+                    className="tooltip"
                     style={{
                       cursor: "pointer",
                       textDecoration: "underline",
                       color: "#007BFF",
                     }}
                   >
-               {field.label}
-               <span className="tooltiptext">  change label </span>
+                    {field.label}
+                    <span className="tooltiptext">change label</span>
                   </label>
                 )}
                 <FaTrashAlt
                   onClick={() => {
                     const updatedFields = formFields.filter((_, i) => i !== index);
-                    setFormFields(updatedFields);
+                    dispatch(resetForm()); // Remove the field via Redux
                   }}
                   style={{
                     cursor: "pointer",
@@ -151,9 +137,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                     placeholder={field.placeholder}
                     value={field.value}
                     onChange={(e) => {
-                      const updatedFields = [...formFields];
-                      updatedFields[index].value = e.target.value;
-                      setFormFields(updatedFields);
+                      dispatch(updateField({ id: field.id, name: "value", value: e.target.value }));
                     }}
                     style={{
                       marginBottom: "10px",
@@ -168,9 +152,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                       placeholder="Edit placeholder"
                       value={field.placeholder}
                       onChange={(e) => {
-                        const updatedFields = [...formFields];
-                        updatedFields[index].placeholder = e.target.value;
-                        setFormFields(updatedFields);
+                        dispatch(updateField({ id: field.id, name: "placeholder", value: e.target.value }));
                       }}
                       onBlur={() => setEditPlaceholderIndex(null)}
                       style={{
@@ -180,181 +162,159 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                       }}
                     />
                   ) : (
-                   <>
-                <span className="tooltip">
-                      <FaCog
+                    <FaCog
                       onClick={() => setEditPlaceholderIndex(index)}
                       style={{
                         cursor: "pointer",
                         color: "#007BFF",
                         marginLeft: "10px",
                       }}
-                    /><span className="tooltiptext">change placeholder</span>
-
-                </span>
-                
-                   </>
-
-
+                    />
                   )}
                 </div>
               )}
 
-{field.type === "dropdown" && (
-  <div style={{ display: "flex", flexDirection: "column" }}>
-    {/* Dropdown options */}
-    <select
-      value={field.value}
-      onChange={(e) => {
-        const updatedFields = [...formFields];
-        updatedFields[index].value = e.target.value;
-        setFormFields(updatedFields);
-      }}
-      style={{
-        marginBottom: "10px",
-        padding: "8px",
-        flex: 1,
-      }}
-    >
-      <option value="" disabled>
-        Select an option
-      </option>
-      {field.options.map((opt, i) => (
-        <option key={i} value={opt}>
-          {opt}
-        </option>
-      ))}
-    </select>
+              {field.type === "dropdown" && (
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <select
+                    value={field.value}
+                    onChange={(e) => {
+                      dispatch(updateField({ id: field.id, name: "value", value: e.target.value }));
+                    }}
+                    style={{
+                      marginBottom: "10px",
+                      padding: "8px",
+                      flex: 1,
+                    }}
+                  >
+                    <option value="" disabled>
+                      Select an option
+                    </option>
+                    {field.options.map((opt, i) => (
+                      <option key={i} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
 
-    {/* Editable dropdown options */}
-    {field.options.map((opt, i) => (
-      <div
-        key={i}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "5px",
-        }}
-      >
-        <input
-          type="text"
-          value={opt}
-          onChange={(e) => handleEditOption(index, i, e.target.value)}
-          style={{
-            flex: 1,
-            marginRight: "10px",
-            padding: "5px",
-          }}
-        />
-        <FaTrashAlt
-          onClick={() => handleDeleteOption(index, i)}
-          style={{
-            cursor: "pointer",
-            color: "#FF5733",
-          }}
-        />
-      </div>
-    ))}
+                  {field.options.map((opt, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "5px",
+                      }}
+                    >
+                      <input
+                        type="text"
+                        value={opt}
+                        onChange={(e) => handleEditOption(index, i, e.target.value)}
+                        style={{
+                          flex: 1,
+                          marginRight: "10px",
+                          padding: "5px",
+                        }}
+                      />
+                      <FaTrashAlt
+                        onClick={() => handleDeleteOption(index, i)}
+                        style={{
+                          cursor: "pointer",
+                          color: "#FF5733",
+                        }}
+                      />
+                    </div>
+                  ))}
 
-    {/* Add new dropdown option */}
-    <input
-      type="text"
-      placeholder="Add option"
-      onKeyDown={(e) => {
-        if (e.key === "Enter" && e.target.value.trim()) {
-          const updatedOptions = [...field.options, e.target.value.trim()];
-          updateFieldOptions(index, updatedOptions);
-          e.target.value = "";
-        }
-      }}
-      style={{
-        marginTop: "10px",
-        padding: "8px",
-        flex: 1,
-      }}
-    />
-  </div>
-)}
+                  <input
+                    type="text"
+                    placeholder="Add option"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && e.target.value.trim()) {
+                        const updatedOptions = [...field.options, e.target.value.trim()];
+                        dispatch(updateField({ id: field.id, name: "options", value: updatedOptions }));
+                        e.target.value = "";
+                      }
+                    }}
+                    style={{
+                      marginTop: "10px",
+                      padding: "8px",
+                      flex: 1,
+                    }}
+                  />
+                </div>
+              )}
 
-{field.type === "radio" && (
-  <div style={{ display: "flex", flexDirection: "column" }}>
-    {/* Radio button options */}
-    {field.options.map((opt, i) => (
-      <label
-        key={i}
-        style={{
-          marginBottom: "5px",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <input
-          type="radio"
-          name={`radio-${index}`}
-          checked={field.value === opt}
-          onChange={() => {
-            const updatedFields = [...formFields];
-            updatedFields[index].value = opt;
-            setFormFields(updatedFields);
-          }}
-          style={{
-            marginRight: "5px",
-          }}
-        />
-        <input
-          type="text"
-          value={opt}
-          onChange={(e) => handleEditOption(index, i, e.target.value)}
-          style={{
-            flex: 1,
-            padding: "5px",
-            marginRight: "10px",
-          }}
-        />
-        <FaTrashAlt
-          onClick={() => handleDeleteOption(index, i)}
-          style={{
-            cursor: "pointer",
-            color: "#FF5733",
-          }}
-        />
-      </label>
-    ))}
+              {field.type === "radio" && (
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {field.options.map((opt, i) => (
+                    <label
+                      key={i}
+                      style={{
+                        marginBottom: "5px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        name={`radio-${index}`}
+                        checked={field.value === opt}
+                        onChange={() => {
+                          dispatch(updateField({ id: field.id, name: "value", value: opt }));
+                        }}
+                        style={{
+                          marginRight: "5px",
+                        }}
+                      />
+                      <input
+                        type="text"
+                        value={opt}
+                        onChange={(e) => handleEditOption(index, i, e.target.value)}
+                        style={{
+                          flex: 1,
+                          padding: "5px",
+                          marginRight: "10px",
+                        }}
+                      />
+                      <FaTrashAlt
+                        onClick={() => handleDeleteOption(index, i)}
+                        style={{
+                          cursor: "pointer",
+                          color: "#FF5733",
+                        }}
+                      />
+                    </label>
+                  ))}
 
-    {/* Add new radio button option */}
-    <input
-      type="text"
-      placeholder="Add option"
-      onKeyDown={(e) => {
-        if (e.key === "Enter" && e.target.value.trim()) {
-          const updatedOptions = [...field.options, e.target.value.trim()];
-          updateFieldOptions(index, updatedOptions);
-          e.target.value = "";
-        }
-      }}
-      style={{
-        marginTop: "10px",
-        padding: "8px",
-        flex: 1,
-      }}
-    />
-  </div>
-)}
-
+                  <input
+                    type="text"
+                    placeholder="Add option"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && e.target.value.trim()) {
+                        const updatedOptions = [...field.options, e.target.value.trim()];
+                        dispatch(updateField({ id: field.id, name: "options", value: updatedOptions }));
+                        e.target.value = "";
+                      }
+                    }}
+                    style={{
+                      marginTop: "10px",
+                      padding: "8px",
+                      flex: 1,
+                    }}
+                  />
+                </div>
+              )}
             </div>
           ))
         )}
       </div>
-
-      <div style={{ marginTop: "20px" }}>
-        <button onClick={saveForm} style={{ marginRight: "10px" }}>
-          Save
+      <div>
+        <button onClick={saveForm} style={{ padding: "10px", backgroundColor: "#28a745", color: "white" }}>
+          Save Form
         </button>
-        <button
-          onClick={resetForm}
-          style={{ backgroundColor: "#f44336", color: "#fff" }}
-        >
-          Reset
+        <button onClick={resetFormState} style={{ padding: "10px", backgroundColor: "#dc3545", color: "white" }}>
+          Reset Form
         </button>
       </div>
     </>

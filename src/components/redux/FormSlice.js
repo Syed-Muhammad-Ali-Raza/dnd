@@ -1,36 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-   
-        label: "",
-        type: "",
-        position: "",
-        value: "",
-        initialValue:"",
-        placeholder: "",
-        options:  [],
-
-    isSubmitting: false,
-    errors: {},
+  formFields: [], 
+  isSubmitting: false, 
+  errors: {}, 
 };
 
 const FormSlice = createSlice({
-    name: "form",
-    initialState,
-    reducers: {
-        updateField: (state, action) => {
-            const { name, value } = action.payload;
-            state[name] = value;
-        },
-        setSubmitting: (state, action) => {
-            state.isSubmitting = action.payload;
-        },
-        setErrors: (state, action) => {
-            state.errors = action.payload;
-        },
+  name: "form",
+  initialState,
+  reducers: {
+    addField: (state, action) => {
+      const field = action.payload;
+      if (!state.formFields.some((f) => f.id === field.id)) {
+        state.formFields.push({
+          ...field,
+          value: field.initialValue || "",
+          placeholder: field.placeholder || "Enter text...",
+          options: field.options || [],
+        });
+      }
     },
+    updateField: (state, action) => {
+      const { id, name, value } = action.payload;
+      const fieldIndex = state.formFields.findIndex((f) => f.id === id);
+      if (fieldIndex !== -1) {
+        state.formFields[fieldIndex][name] = value;
+      }
+    },
+    setSubmitting: (state, action) => {
+      state.isSubmitting = action.payload;
+    },
+    setErrors: (state, action) => {
+      state.errors = action.payload;
+    },
+    resetForm: (state) => {
+      state.formFields = [];
+    },
+  },
 });
 
-export const { updateField, setSubmitting, setErrors } = FormSlice.action
+export const { addField, updateField, setSubmitting, setErrors, resetForm } = FormSlice.actions;
 
-export default FormSlice.reducer
+export default FormSlice.reducer;
