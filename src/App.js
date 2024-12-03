@@ -10,10 +10,10 @@ function App() {
 <>
 
         <Header/>
-<BrowserRouter>
+        <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<CustomerList />}/> */}
-        {/* <Route path ="/formBuilder" element={<DndLayout />}/> */}
+        <Route path="/customer" element={<CustomerList />}/>
+        <Route path ="/formBuilder" element={<DndLayout />}/>
      
       </Routes>
     </BrowserRouter>

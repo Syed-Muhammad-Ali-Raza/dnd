@@ -7,12 +7,19 @@ const Header = () => {
 
    <ul>
      <li>
-      {/* <Link to ="/">
-          Customer
-      </Link>
+     <a href="/customer" >
+     Customer
+     </a>
+     </li>
+
+     <li>
+      <a href="/formBuilder">
+     Form Builder
+      </a>
+
      </li>
      <li>
-      <Link to ="/formBuilder">
+      {/* <Link to ="/formBuilder">
           Form Builder
       </Link> */}
      </li>
@@ -21,7 +28,7 @@ const Header = () => {
 
    </ul>
 
-        <DndLayout/>
+    
       
     </div>
   )

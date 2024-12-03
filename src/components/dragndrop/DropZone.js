@@ -4,7 +4,7 @@ import { FaTrashAlt, FaEdit, FaCog } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { addField, updateField, resetForm } from "../redux/FormSlice"; // Adjust path as needed
 import "./Dnd.css";
-
+import { useNavigate } from "react-router-dom";
 const DropZone = ({ droppedFields, setDroppedFields }) => {
   const dispatch = useDispatch();
   const formFields = useSelector((state) => state.form.formFields);
@@ -18,7 +18,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       isOver: !!monitor.isOver(),
     }),
   }));
-
+  const navigate = useNavigate();
   const addFieldToForm = (field) => {
     if (!droppedFields.has(field.id)) {
       dispatch(addField(field)); 
@@ -27,6 +27,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
   };
 
   const saveForm = () => {
+    // Get the current form data
     const formData = formFields.reduce((acc, field) => {
       acc[field.id] = {
         label: field.label,
@@ -39,9 +40,25 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       };
       return acc;
     }, {});
-
+  
+    // Generate a unique form ID (can use Date.now() or a UUID)
+    const formId = Date.now(); // Unique ID for each form based on timestamp
+  
+    // Fetch the existing forms array from localStorage, if it exists
+    const existingForms = JSON.parse(localStorage.getItem("formsData") || "[]");
+  
+    const updatedForms = [
+      ...existingForms,
+      { id: formId, data: formData }, 
+    ];
+  
+    localStorage.setItem("formsData", JSON.stringify(updatedForms));
+  
     console.log("Saved Form Data:", formData);
+  
+    navigate("/customer");
   };
+  
 
   const handleDeleteOption = (fieldIndex, optionIndex) => {
     const updatedOptions = formFields[fieldIndex].options.filter(

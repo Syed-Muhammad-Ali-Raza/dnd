@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  formFields: [], 
-  isSubmitting: false, 
-  errors: {}, 
+  formFields: [],
+  isSubmitting: false,
+  errors: {},
 };
 
 const FormSlice = createSlice({
@@ -37,9 +37,13 @@ const FormSlice = createSlice({
     resetForm: (state) => {
       state.formFields = [];
     },
+    deleteField: (state, action) => {
+      const { id } = action.payload;
+      state.formFields = state.formFields.filter((field) => field.id !== id);
+    },
   },
 });
 
-export const { addField, updateField, setSubmitting, setErrors, resetForm } = FormSlice.actions;
+export const { addField, updateField, setSubmitting, setErrors, resetForm, deleteField } = FormSlice.actions;
 
 export default FormSlice.reducer;
