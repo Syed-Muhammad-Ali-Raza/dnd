@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
    
+        label: "",
+        type: "",
+        position: "",
+        value: "",
+        initialValue:"",
+        placeholder: "",
+        options:  [],
 
-    name:"",
-    gender : "",
-    email :"",
-    comments : "",
-    country:"",
     isSubmitting: false,
     errors: {},
 };

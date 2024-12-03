@@ -180,14 +180,22 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                       }}
                     />
                   ) : (
-                    <FaCog
+                   <>
+                <span className="tooltip">
+                      <FaCog
                       onClick={() => setEditPlaceholderIndex(index)}
                       style={{
                         cursor: "pointer",
                         color: "#007BFF",
                         marginLeft: "10px",
                       }}
-                    />
+                    /><span className="tooltiptext">change placeholder</span>
+
+                </span>
+                
+                   </>
+
+
                   )}
                 </div>
               )}
