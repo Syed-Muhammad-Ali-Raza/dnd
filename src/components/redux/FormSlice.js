@@ -37,7 +37,12 @@ const FormSlice = createSlice({
     },
     setErrors: (state, action) => {
       state.errors = action.payload;
+    },  
+    setFormFields: (state, action) => {
+      state.formFields = action.payload;
     },
+    
+    
     resetForm: (state) => {
       state.formName = ""; // Reset form name
       state.formFields = []; // Reset fields
@@ -82,6 +87,7 @@ export const {
   resetForm,
   deleteField,
   saveForm,
+  setFormFields
 } = FormSlice.actions;
 
 export default FormSlice.reducer;

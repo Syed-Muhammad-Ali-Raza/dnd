@@ -28,7 +28,9 @@ function CustomerList() {
   };
 
   const handleEdit = (formId) => {
-    navigate(`/edit/${formId}`);
+    console.log(formId)
+    navigate(`/formBuilder/${formId}`);
+
   };
 
   return (

@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDrop } from "react-dnd";
 import { FaTrashAlt, FaEdit, FaCog } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { addField, updateField, resetForm } from "../../redux/FormSlice"; // Adjust path as needed
+import { addField, updateField, resetForm, setFormFields } from "../../redux/FormSlice"; // Adjust path as needed
 import "./DropZone.css";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 const DropZone = ({ droppedFields, setDroppedFields }) => {
   const dispatch = useDispatch();
   const formFields = useSelector((state) => state.form.formFields);
@@ -13,6 +14,13 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
   const [editPlaceholderIndex, setEditPlaceholderIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formName, setFormName] = useState("");
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingFormId, setEditingFormId] = useState(null);
+
+  const { formId } = useParams(); 
+  console.log(formId,"formId")
+  const navigate = useNavigate();
+
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "FORM_FIELD",
     drop: (item) => addFieldToForm(item.field),
@@ -20,7 +28,34 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       isOver: !!monitor.isOver(),
     }),
   }));
-  const navigate = useNavigate();
+
+  // Load existing form for editing when component mounts
+  useEffect(() => {
+    if (formId) {
+      const existingForms = JSON.parse(localStorage.getItem("formsData") || "[]");
+      const formToEdit = existingForms.find(form => form.id.toString() === formId);
+      
+      if (formToEdit) {
+        setIsEditMode(true);
+        setEditingFormId(formToEdit.id);
+        setFormName(formToEdit.formName);
+        
+        // Convert form data to array of fields
+        const fieldsArray = Object.entries(formToEdit.data).map(([id, fieldData]) => ({
+          id,
+          ...fieldData
+        }));
+
+        // Populate form fields in Redux store
+        dispatch(setFormFields(fieldsArray));
+        
+        // Update droppedFields
+        const droppedFieldsSet = new Set(fieldsArray.map(field => field.id));
+        setDroppedFields(droppedFieldsSet);
+      }
+    }
+  }, [formId, dispatch]);
+
   const addFieldToForm = (field) => {
     if (!droppedFields.has(field.id)) {
       dispatch(addField(field)); 
@@ -47,24 +82,35 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       return acc;
     }, {});
 
-    const formId = Date.now(); // Unique ID for each form
-
+    // Get existing forms from local storage
     const existingForms = JSON.parse(localStorage.getItem("formsData") || "[]");
 
-    const updatedForms = [
-      ...existingForms,
-      { id: formId, formName, data: formData },
-    ];
+    if (isEditMode && editingFormId) {
+      // Update existing form
+      const updatedForms = existingForms.map(form => 
+        form.id === editingFormId 
+          ? { id: editingFormId, formName, data: formData }
+          : form
+      );
 
-    localStorage.setItem("formsData", JSON.stringify(updatedForms));
+      localStorage.setItem("formsData", JSON.stringify(updatedForms));
+      console.log("Updated Form Data:", { id: editingFormId, formName, data: formData });
+    } else {
+      // Create new form
+      const newFormId = Date.now(); // Unique ID for each form
+      const updatedForms = [
+        ...existingForms,
+        { id: newFormId, formName, data: formData },
+      ];
 
-    console.log("Saved Form Data:", { id: formId, formName, data: formData });
+      localStorage.setItem("formsData", JSON.stringify(updatedForms));
+      console.log("Saved Form Data:", { id: newFormId, formName, data: formData });
+    }
 
-    setIsModalOpen(false); // Close modal
-    setFormName(""); // Reset form name
+    setIsModalOpen(false);
+    setFormName("");
     navigate("/customer");
   };
-  
 
   const handleDeleteOption = (fieldIndex, optionIndex) => {
     const updatedOptions = formFields[fieldIndex].options.filter(
@@ -80,22 +126,23 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
   };
 
   const resetFormState = () => {
-    dispatch(resetForm()); // Dispatch resetForm action
+    dispatch(resetForm());
     setDroppedFields(new Set());
+    setFormName("");
+    setIsEditMode(false);
+    setEditingFormId(null);
   };
 
   return (
     <>
       <div
         ref={drop}
-        
         style={{
           border: "2px dashed #aaa",
           padding: "20px",
           height: "500px",
           background: isOver ? "#f0f8ff" : "#fafafa",
           overflowY: "auto"
-
         }}
       >
         {formFields.length === 0 ? (
@@ -337,17 +384,20 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       </div>
 
       <div>
-      <button
+        <button
           onClick={() => setIsModalOpen(true)}
           style={{ padding: "10px", backgroundColor: "#28a745", color: "white" }}
         >
-          Save Form
+          {isEditMode ? "Update Form" : "Save Form"}
         </button>
-        <button onClick={resetFormState} style={{ padding: "10px", backgroundColor: "#dc3545", color: "white" }}>
+        <button 
+          onClick={resetFormState} 
+          style={{ padding: "10px", backgroundColor: "#dc3545", color: "white" }}
+        >
           Reset Form
         </button>
-        
       </div>
+
       {/* Modal */}
       {isModalOpen && (
         <div
@@ -362,7 +412,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
             zIndex: 1000,
           }}
         >
-          <h3>Enter Form Name</h3>
+          <h3>{isEditMode ? "Update Form Name" : "Enter Form Name"}</h3>
           <input
             type="text"
             value={formName}
@@ -384,7 +434,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                 color: "white",
               }}
             >
-              Save
+              {isEditMode ? "Update" : "Save"}
             </button>
             <button
               onClick={() => setIsModalOpen(false)}

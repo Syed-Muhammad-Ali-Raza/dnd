@@ -14,9 +14,9 @@ function App() {
         <BrowserRouter>
       <Routes>
         <Route path="/customer" element={<CustomerList />}/>
-        <Route path ="/formBuilder" element={<DndLayout />}/>
+        <Route path ="/formBuilder/:formId?" element={<DndLayout />}/>
         <Route path="/edit/:formId" element={<EditCustomer />} />
-        <Route path="*" element={<h1>Not Found</h1>} />
+       
      
       </Routes>
     </BrowserRouter>
