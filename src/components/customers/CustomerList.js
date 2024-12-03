@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import './CustomerList.css';
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
+import { useDispatch } from 'react-redux';
+import { deleteField } from '../redux/FormSlice';  // adjust the path to your slice
+import { useNavigate } from 'react-router-dom';
 
 function CustomerList() {
   const [customerData, setCustomerData] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const ls = localStorage.getItem('formsData');
@@ -11,6 +15,21 @@ function CustomerList() {
       setCustomerData(JSON.parse(ls));
     }
   }, []);
+  
+  useEffect(() => {
+    localStorage.getItem('formsData', JSON.stringify(customerData));
+  }, [customerData]);
+
+  const handleDelete = (formId) => {
+    dispatch(deleteField({ formId }));
+    setCustomerData((prev) => prev.filter((form) => form.id !== formId));
+    localStorage.setItem('formsData', JSON.stringify(customerData));
+  };
+
+  const handleEdit = (formId) => {
+    // Navigate to the edit page with the formId
+    navigate(`/edit/${formId}`);
+  };
 
   return (
     <div className="customer-list-container">
@@ -29,12 +48,11 @@ function CustomerList() {
           <tbody>
             {customerData.length > 0 ? (
               customerData.map((form) => {
-                // Calculate the number of rows for the current form
-                const rowCount = Object.entries(form.data).length;
+                if (!form.data) return null;  // Ensure form.data is not undefined or null
 
+                const rowCount = Object.entries(form.data).length;
                 return (
                   <React.Fragment key={form.id}>
-                    {/* Render Form ID only for the first row of this Form */}
                     {Object.entries(form.data).map(([key, value], index) => (
                       <tr key={key}>
                         {index === 0 && (
@@ -43,16 +61,15 @@ function CustomerList() {
                         <td>{value.label}</td>
                         <td>{value.type}</td>
                         <td>{value.value}</td>
-                        {/* Show Edit/Delete buttons only once per form ID */}
                         {index === 0 && (
                           <td rowSpan={rowCount}>
                             <FaEdit
                               className="action-icon"
-                              onClick={() => { console.log('Edit clicked') }}
+                              onClick={() => handleEdit(form.id)}  // Navigate to edit page
                             />
                             <FaTrashAlt
                               className="action-icon"
-                              onClick={() => { console.log('Delete clicked') }}
+                              onClick={() => handleDelete(form.id)}  // Call handleDelete with formId
                             />
                           </td>
                         )}

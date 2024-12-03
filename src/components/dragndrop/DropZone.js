@@ -138,7 +138,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                 <FaTrashAlt
                   onClick={() => {
                     const updatedFields = formFields.filter((_, i) => i !== index);
-                    dispatch(resetForm()); // Remove the field via Redux
+                    dispatch(resetForm()); 
                   }}
                   style={{
                     cursor: "pointer",

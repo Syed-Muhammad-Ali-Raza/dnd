@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  formFields: [],
+  formFields: [], // Holds the forms data
   isSubmitting: false,
   errors: {},
 };
@@ -40,6 +40,9 @@ const FormSlice = createSlice({
     deleteField: (state, action) => {
       const { id } = action.payload;
       state.formFields = state.formFields.filter((field) => field.id !== id);
+
+      // Sync with localStorage after deleting
+      localStorage.setItem('formsData', JSON.stringify(state.formFields));
     },
   },
 });
