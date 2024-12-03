@@ -1,0 +1,152 @@
+/* Dnd.css */
+.drop-zone {
+  border: 2px dashed #aaa;
+  padding: 20px;
+  min-height: 300px;
+  background-color: #fafafa;
+  transition: background-color 0.3s ease;
+}
+
+.drop-zone.is-over {
+  background-color: #f0f8ff;
+}
+
+.drop-zone p {
+  color: #666;
+  font-style: italic;
+}
+
+.field-container {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.field-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.field-header label {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.field-header .tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.field-header .tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Adjust based on element position */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.field-header .tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.field-header .fa-trash-alt {
+  cursor: pointer;
+  color: #ff5733;
+  transition: transform 0.2s;
+}
+
+.field-header .fa-trash-alt:hover {
+  transform: scale(1.2);
+}
+
+.field-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.field-input input[type="text"],
+.field-input select,
+.field-input textarea {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.field-options input {
+  padding: 5px;
+  flex: 1;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.field-options .fa-trash-alt {
+  cursor: pointer;
+  color: #ff5733;
+  transition: transform 0.2s;
+}
+
+.field-options .fa-trash-alt:hover {
+  transform: scale(1.2);
+}
+
+.add-option-input {
+  margin-top: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.button-container .save-button {
+  background-color: #28a745;
+}
+
+.button-container .save-button:hover {
+  background-color: #218838;
+}
+
+.button-container .reset-button {
+  background-color: #dc3545;
+}
+
+.button-container .reset-button:hover {
+  background-color: #c82333;
+}
+input{
+  padding:  5px 15px;
+}

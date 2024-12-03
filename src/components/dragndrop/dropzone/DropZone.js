@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useDrop } from "react-dnd";
 import { FaTrashAlt, FaEdit, FaCog } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { addField, updateField, resetForm } from "../redux/FormSlice"; // Adjust path as needed
-import "./Dnd.css";
+import { addField, updateField, resetForm } from "../../redux/FormSlice"; // Adjust path as needed
+import "./DropZone.css";
+
 import { useNavigate } from "react-router-dom";
 const DropZone = ({ droppedFields, setDroppedFields }) => {
   const dispatch = useDispatch();
@@ -82,11 +83,14 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
     <>
       <div
         ref={drop}
+        
         style={{
           border: "2px dashed #aaa",
           padding: "20px",
-          minHeight: "300px",
+          height: "500px",
           background: isOver ? "#f0f8ff" : "#fafafa",
+          overflowY: "auto"
+
         }}
       >
         {formFields.length === 0 ? (
@@ -326,6 +330,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
           ))
         )}
       </div>
+
       <div>
         <button onClick={saveForm} style={{ padding: "10px", backgroundColor: "#28a745", color: "white" }}>
           Save Form

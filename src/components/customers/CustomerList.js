@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import { useDispatch } from 'react-redux';
-import { deleteField } from '../redux/FormSlice';  // adjust the path to your slice
+import { deleteField } from '../redux/FormSlice'; 
 import { useNavigate } from 'react-router-dom';
 
 function CustomerList() {

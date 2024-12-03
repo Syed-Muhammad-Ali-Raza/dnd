@@ -1,0 +1,188 @@
+/* Modern, Clean DropZone Styles */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --danger-color: #e74c3c;
+    --light-background: #f4f6f7;
+    --text-color: #2c3e50;
+    --border-color: #bdc3c7;
+  }
+  
+  .dropzone-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 32px;
+    background-color: var(--light-background);
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  .dropzone {
+    border: 2px dashed var(--border-color);
+    background: white;
+    padding: 32px;
+    width: 100%;
+    max-width: 700px;
+    min-height: 400px;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .dropzone:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary-color);
+  }
+  
+  .dropzone-over {
+    background-color: rgba(52, 152, 219, 0.05);
+    border-color: var(--primary-color);
+  }
+  
+  .dropzone-placeholder {
+    color: var(--border-color);
+    font-size: 18px;
+    font-weight: 300;
+    text-align: center;
+  }
+  
+  .field-container {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    transition: all 0.2s ease;
+  }
+  
+  .field-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  }
+  
+  .field-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--light-background);
+  }
+  
+  .field-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  
+  .field-label:hover {
+    color: var(--primary-color);
+  }
+  
+  .field-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  .field-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  
+  .btn-save, .btn-reset {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .btn-save {
+    background-color: var(--secondary-color);
+    color: white;
+  }
+  
+  .btn-save:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+  }
+  
+  .btn-reset {
+    background-color: var(--danger-color);
+    color: white;
+  }
+  
+  .btn-reset:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 600px) {
+    .dropzone-container {
+      padding: 16px;
+    }
+  
+    .dropzone {
+      padding: 24px;
+      min-height: 300px;
+    }
+  
+    .button-container {
+      flex-direction: column;
+      width: 100%;
+    }
+  
+    .btn-save, .btn-reset {
+      width: 100%;
+    }
+  }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted rgb(50, 49, 49);
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+      position: absolute;
+    z-index: 1;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+

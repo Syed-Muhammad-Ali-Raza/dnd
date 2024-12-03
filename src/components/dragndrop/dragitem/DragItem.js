@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
-import './Dnd.css'
+// import '../../dragndrop/Dnd.css'
 const DragItem = ({ field, droppedFields }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'FORM_FIELD',
@@ -19,7 +19,7 @@ const DragItem = ({ field, droppedFields }) => {
         padding: '10px',
         margin: '5px',
         background: isDragging ? '#ddd' : '#fff',
-        cursor: droppedFields.has(field.id) ? 'not-allowed' : 'move', 
+        cursor: 'move', 
       }}
     >
       {field.label}
