@@ -11,7 +11,8 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
   const formFields = useSelector((state) => state.form.formFields);
   const [editLabelIndex, setEditLabelIndex] = useState(null);
   const [editPlaceholderIndex, setEditPlaceholderIndex] = useState(null);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formName, setFormName] = useState("");
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "FORM_FIELD",
     drop: (item) => addFieldToForm(item.field),
@@ -28,7 +29,11 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
   };
 
   const saveForm = () => {
-    // Get the current form data
+    if (!formName.trim()) {
+      alert("Please enter a form name.");
+      return;
+    }
+
     const formData = formFields.reduce((acc, field) => {
       acc[field.id] = {
         label: field.label,
@@ -41,22 +46,22 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       };
       return acc;
     }, {});
-  
-    // Generate a unique form ID (can use Date.now() or a UUID)
-    const formId = Date.now(); // Unique ID for each form based on timestamp
-  
-    // Fetch the existing forms array from localStorage, if it exists
+
+    const formId = Date.now(); // Unique ID for each form
+
     const existingForms = JSON.parse(localStorage.getItem("formsData") || "[]");
-  
+
     const updatedForms = [
       ...existingForms,
-      { id: formId, data: formData }, 
+      { id: formId, formName, data: formData },
     ];
-  
+
     localStorage.setItem("formsData", JSON.stringify(updatedForms));
-  
-    console.log("Saved Form Data:", formData);
-  
+
+    console.log("Saved Form Data:", { id: formId, formName, data: formData });
+
+    setIsModalOpen(false); // Close modal
+    setFormName(""); // Reset form name
     navigate("/customer");
   };
   
@@ -332,13 +337,68 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       </div>
 
       <div>
-        <button onClick={saveForm} style={{ padding: "10px", backgroundColor: "#28a745", color: "white" }}>
+      <button
+          onClick={() => setIsModalOpen(true)}
+          style={{ padding: "10px", backgroundColor: "#28a745", color: "white" }}
+        >
           Save Form
         </button>
         <button onClick={resetFormState} style={{ padding: "10px", backgroundColor: "#dc3545", color: "white" }}>
           Reset Form
         </button>
+        
       </div>
+      {/* Modal */}
+      {isModalOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "white",
+            padding: "20px",
+            boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+            zIndex: 1000,
+          }}
+        >
+          <h3>Enter Form Name</h3>
+          <input
+            type="text"
+            value={formName}
+            onChange={(e) => setFormName(e.target.value)}
+            placeholder="Form Name"
+            style={{
+              width: "100%",
+              padding: "10px",
+              marginBottom: "10px",
+              border: "1px solid #ccc",
+            }}
+          />
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <button
+              onClick={saveForm}
+              style={{
+                padding: "10px",
+                backgroundColor: "#28a745",
+                color: "white",
+              }}
+            >
+              Save
+            </button>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              style={{
+                padding: "10px",
+                backgroundColor: "#dc3545",
+                color: "white",
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

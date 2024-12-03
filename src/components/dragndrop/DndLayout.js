@@ -13,11 +13,11 @@ const DndLayout = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div style={{ display: 'flex', gap: '20px', padding: '20px' }}>
+      <div style={{ display: 'flex', padding: '20px' }}>
      
       <div>
           <h3> Fields</h3>
-        <div style={{  border: '1px solid #ddd', padding: '20px' }}>
+        <div style={{  border: '1px solid #ddd', padding: '20px' , height: '504px'  ,  width :'270px'}}>
         
           {formFields.map((field) => (
             <DragItem key={field.id} field={field} droppedFields={droppedFields} />
