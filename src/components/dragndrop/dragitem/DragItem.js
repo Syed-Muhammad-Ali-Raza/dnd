@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
-// import '../../dragndrop/Dnd.css'
+
 const DragItem = ({ field, droppedFields }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'FORM_FIELD',
     item: { field },
-    canDrag: !droppedFields.has(field.id), // Prevent dragging if the field is already dropped
+    canDrag: !droppedFields.has(field.id), 
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

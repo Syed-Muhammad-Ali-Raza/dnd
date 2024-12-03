@@ -1,0 +1,29 @@
+ul {
+    display: flex;
+    justify-content: end;
+}
+
+
+li {
+    list-style: none;
+    text-decoration: none;
+    padding: 10px;
+    
+}
+
+
+a ,  Link {
+
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+   
+    padding: 10px;
+
+}
+
+
+
+.header-main{
+    background-color: lightblue;
+}

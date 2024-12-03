@@ -3,6 +3,7 @@ import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import { useDispatch } from 'react-redux';
 import { deleteField } from '../redux/FormSlice'; 
 import { useNavigate } from 'react-router-dom';
+import './CustomerList.css'
 
 function CustomerList() {
   const [customerData, setCustomerData] = useState([]);
@@ -17,7 +18,7 @@ function CustomerList() {
   }, []);
   
   useEffect(() => {
-    localStorage.getItem('formsData', JSON.stringify(customerData));
+    localStorage.setItem('formsData', JSON.stringify(customerData));
   }, [customerData]);
 
   const handleDelete = (formId) => {
@@ -27,7 +28,6 @@ function CustomerList() {
   };
 
   const handleEdit = (formId) => {
-    // Navigate to the edit page with the formId
     navigate(`/edit/${formId}`);
   };
 
@@ -38,7 +38,7 @@ function CustomerList() {
         <table className="table">
           <thead>
             <tr>
-              <th>Form ID</th>
+              <th>#</th>
               <th>Label</th>
               <th>Type</th>
               <th>Value</th>
@@ -47,17 +47,18 @@ function CustomerList() {
           </thead>
           <tbody>
             {customerData.length > 0 ? (
-              customerData.map((form) => {
-                if (!form.data) return null;  // Ensure form.data is not undefined or null
+              customerData.map((form, formIndex) => {
+                if (!form.data) return null;  
 
                 const rowCount = Object.entries(form.data).length;
                 return (
-                  <React.Fragment key={form.id}>
+                  <React.Fragment key={formIndex}>
                     {Object.entries(form.data).map(([key, value], index) => (
                       <tr key={key}>
                         {index === 0 && (
-                          <td rowSpan={rowCount}>{form.id}</td>
+                          <td rowSpan={rowCount}>{formIndex + 1}</td>
                         )}
+                        
                         <td>{value.label}</td>
                         <td>{value.type}</td>
                         <td>{value.value}</td>
@@ -65,11 +66,11 @@ function CustomerList() {
                           <td rowSpan={rowCount}>
                             <FaEdit
                               className="action-icon"
-                              onClick={() => handleEdit(form.id)}  // Navigate to edit page
+                              onClick={() => handleEdit(form.id)}  
                             />
                             <FaTrashAlt
                               className="action-icon"
-                              onClick={() => handleDelete(form.id)}  // Call handleDelete with formId
+                              onClick={() => handleDelete(form.id)}  
                             />
                           </td>
                         )}

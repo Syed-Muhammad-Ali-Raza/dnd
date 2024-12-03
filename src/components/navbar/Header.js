@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import DndLayout from '../dragndrop/DndLayout'
+
+import './Header.css'
 const Header = () => {
   return (
-    <div>
+    <div className='header-main'>
 
    <ul>
      <li>
