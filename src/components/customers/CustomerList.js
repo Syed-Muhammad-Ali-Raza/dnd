@@ -80,10 +80,10 @@ function CustomerList() {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <p>Are you sure you want to delete this form?</p>
+            <p className='modal-text'>Are you sure you want to delete this form?</p>
             <div className="modal-actions">
               <button className='btnYes' onClick={confirmDelete}>Yes</button>
-              <button className='btnYes' onClick={cancelDelete}>No</button>
+              <button className='btnNo' onClick={cancelDelete}>No</button>
             </div>
           </div>
         </div>

@@ -17,7 +17,6 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
   const [formName, setFormName] = useState("");
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingFormId, setEditingFormId] = useState(null);
-  const updateToast = () => toast("Updated Successfully");
   const { formId } = useParams(); 
   console.log(formId,"formId")
   const navigate = useNavigate();
@@ -118,7 +117,6 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
     const updatedOptions = [...formFields[fieldIndex].options];
     updatedOptions[optionIndex] = newValue;
     dispatch(updateField({ id: formFields[fieldIndex].id, name: "options", value: updatedOptions }));
-    updateToast();
   };
 
   const resetFormState = () => {
@@ -406,7 +404,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
             placeholder="Form Name"
             
           />
-          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+          <div style={{ display: "flex", justifyContent: "center" , gap:"20px" }}>
             <button  onClick={saveForm}  className="saveBtnModal"
              
             >
