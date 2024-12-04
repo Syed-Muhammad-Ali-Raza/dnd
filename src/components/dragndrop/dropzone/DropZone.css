@@ -212,48 +212,76 @@
   border: 1px solid #ccc;
 }
 
-.modal-container{
+.modal-container {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  background-color: #ffffff;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow for a cleaner look */
   z-index: 1000;
-  min-height: 300px;
-  min-width: 357px;
-  border-radius: 10px;
+  min-height: 320px; /* Slightly increased for balance */
+  min-width: 400px; /* Updated width for better responsiveness */
+  border-radius: 12px; /* Slightly larger radius for a modern look */
   display: flex;
   flex-direction: column;
   justify-content: center;
+  font-family: Arial, sans-serif; /* Added font for consistency */
 }
 
-.ResetBtn{
-
-
-  padding: 11px 20px;
+.ResetBtn {
+  padding: 12px 24px; /* Increased padding for better usability */
   background-color: #dc3545;
-   color: white;
-   border-radius: 20px;
-   border: none;
+  color: white;
+  border-radius: 24px; /* Slightly larger for smoother appearance */
+  border: none;
   cursor: pointer;
-
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transitions for hover effect */
 }
 
-.UpdateSaveBtn{
-    padding: 11px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 20px;
+.ResetBtn:hover {
+  background-color: #c82333; /* Darker shade on hover */
+  transform: scale(1.05); /* Slight zoom effect for interactivity */
 }
-.formBuilderBtn{
+
+.UpdateSaveBtn {
+  padding: 12px 24px; /* Consistent padding with ResetBtn */
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 24px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.UpdateSaveBtn:hover {
+  background-color: #218838; /* Darker green shade on hover */
+  transform: scale(1.05);
+}
+
+.formBuilderBtn {
   display: flex;
-  justify-content: end;
-  gap: 20px;
+  justify-content: flex-end; /* Aligned buttons to the right */
+  gap: 20px; /* Consistent spacing between buttons */
   margin-top: 20px;
+}
+
+/* Added input field styling for consistency with modal */
+.modal-container input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-container input:focus {
+  border-color: #80bdff; /* Focused blue border */
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
 }
 
 .noDataDrag{
