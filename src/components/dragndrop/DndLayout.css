@@ -150,3 +150,12 @@
 input{
   padding:  5px 15px;
 }
+
+
+h3{
+  display: flex;
+  justify-content: center;
+  font-weight: 400;
+  font-size: 1.5rem;
+  margin: 5px 0px;
+}

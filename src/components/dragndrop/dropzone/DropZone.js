@@ -29,7 +29,6 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
     }),
   }));
 
-  // Load existing form for editing when component mounts
   useEffect(() => {
     if (formId) {
       const existingForms = JSON.parse(localStorage.getItem("formsData") || "[]");
@@ -40,16 +39,13 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
         setEditingFormId(formToEdit.id);
         setFormName(formToEdit.formName);
         
-        // Convert form data to array of fields
         const fieldsArray = Object.entries(formToEdit.data).map(([id, fieldData]) => ({
           id,
           ...fieldData
         }));
 
-        // Populate form fields in Redux store
         dispatch(setFormFields(fieldsArray));
         
-        // Update droppedFields
         const droppedFieldsSet = new Set(fieldsArray.map(field => field.id));
         setDroppedFields(droppedFieldsSet);
       }
@@ -82,11 +78,9 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       return acc;
     }, {});
 
-    // Get existing forms from local storage
     const existingForms = JSON.parse(localStorage.getItem("formsData") || "[]");
 
     if (isEditMode && editingFormId) {
-      // Update existing form
       const updatedForms = existingForms.map(form => 
         form.id === editingFormId 
           ? { id: editingFormId, formName, data: formData }
@@ -96,8 +90,8 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       localStorage.setItem("formsData", JSON.stringify(updatedForms));
       console.log("Updated Form Data:", { id: editingFormId, formName, data: formData });
     } else {
-      // Create new form
-      const newFormId = Date.now(); // Unique ID for each form
+
+      const newFormId = Date.now();
       const updatedForms = [
         ...existingForms,
         { id: newFormId, formName, data: formData },
@@ -146,7 +140,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
         }}
       >
         {formFields.length === 0 ? (
-          <p>Drag fields here...</p>
+          <p className="noDataDrag">Drag fields here...</p>
         ) : (
           formFields.map((field, index) => (
             <div
@@ -383,16 +377,15 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
         )}
       </div>
 
-      <div>
+      <div className="formBuilderBtn">
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsModalOpen(true)} className="UpdateSaveBtn"
           style={{ padding: "10px", backgroundColor: "#28a745", color: "white" }}
         >
           {isEditMode ? "Update Form" : "Save Form"}
         </button>
         <button 
-          onClick={resetFormState} 
-          style={{ padding: "10px", backgroundColor: "#dc3545", color: "white" }}
+          onClick={resetFormState}  className="ResetBtn"
         >
           Reset Form
         </button>
@@ -400,49 +393,26 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
-            padding: "20px",
-            boxShadow: "0 0 10px rgba(0,0,0,0.3)",
-            zIndex: 1000,
-          }}
+        <div className="modal-container"
+       
         >
           <h3>{isEditMode ? "Update Form Name" : "Enter Form Name"}</h3>
           <input
             type="text"
+            className="InputFieldModal"
             value={formName}
             onChange={(e) => setFormName(e.target.value)}
             placeholder="Form Name"
-            style={{
-              width: "100%",
-              padding: "10px",
-              marginBottom: "10px",
-              border: "1px solid #ccc",
-            }}
+            
           />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <button
-              onClick={saveForm}
-              style={{
-                padding: "10px",
-                backgroundColor: "#28a745",
-                color: "white",
-              }}
+          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+            <button  onClick={saveForm}  className="saveBtnModal"
+             
             >
               {isEditMode ? "Update" : "Save"}
             </button>
-            <button
-              onClick={() => setIsModalOpen(false)}
-              style={{
-                padding: "10px",
-                backgroundColor: "#dc3545",
-                color: "white",
-              }}
+            <button  onClick={() => setIsModalOpen(false)} className="cancelBtnModal"
+            
             >
               Cancel
             </button>

@@ -186,3 +186,82 @@
     visibility: visible;
   }
 
+  .saveBtnModal{
+    padding: 11px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 20px;
+
+  cursor: pointer;
+  }
+.cancelBtnModal{
+  padding: 11px 20px;
+  background-color: #dc3545;
+  color: white;
+ 
+  border-radius: 20px;
+   border: none;
+  cursor: pointer;
+}
+
+.InputFieldModal{
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+
+.modal-container{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  min-height: 300px;
+  min-width: 357px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ResetBtn{
+
+
+  padding: 11px 20px;
+  background-color: #dc3545;
+   color: white;
+   border-radius: 20px;
+   border: none;
+  cursor: pointer;
+
+}
+
+.UpdateSaveBtn{
+    padding: 11px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+}
+.formBuilderBtn{
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.noDataDrag{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  font-size: 20px;
+  color: #ccc;
+}

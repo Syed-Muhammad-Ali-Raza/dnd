@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  formName: "", // Holds the name of the form
-  formFields: [], // Holds the form's data
+  formName: "", 
+  formFields: [], 
   isSubmitting: false,
   errors: {},
 };
@@ -12,7 +12,7 @@ const FormSlice = createSlice({
   initialState,
   reducers: {
     setFormName: (state, action) => {
-      state.formName = action.payload; // Set the form name
+      state.formName = action.payload; 
     },
     addField: (state, action) => {
       const field = action.payload;
@@ -44,14 +44,13 @@ const FormSlice = createSlice({
     
     
     resetForm: (state) => {
-      state.formName = ""; // Reset form name
-      state.formFields = []; // Reset fields
+      state.formName = ""; 
+      state.formFields = []; 
     },
     deleteField: (state, action) => {
       const { id } = action.payload;
       state.formFields = state.formFields.filter((field) => field.id !== id);
 
-      // Sync with localStorage after deleting
       localStorage.setItem(
         "formsData",
         JSON.stringify({
@@ -61,12 +60,10 @@ const FormSlice = createSlice({
       );
     },
     saveForm: (state, action) => {
-      // This reducer can handle form saving with a name
       const { formName, formFields } = action.payload;
       state.formName = formName;
       state.formFields = formFields;
 
-      // Save the entire form (including name) to localStorage
       localStorage.setItem(
         "formsData",
         JSON.stringify({
