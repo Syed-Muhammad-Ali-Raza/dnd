@@ -36,11 +36,10 @@ function CustomerList() {
       <h1 className="customer-list-title">Form List</h1>
       <div className="customer-list">
         {customerData.length > 0 ? (
-          customerData.map((form, formIndex) => (
+          customerData.map((form) => (
             <div key={form.id} className="customer-card">
               <div className="card-content">
                 <h3 className="form-name">{form.formName}</h3>
-             
               </div>
               <div className="card-actions">
                 <FaEdit
