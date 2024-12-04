@@ -13,37 +13,56 @@
 }
 
 .customer-list {
-  overflow-x: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 0;
-  padding: 0;
+.customer-card {
   background-color: #ffffff;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  text-align: center;
 }
 
-.table th,
-.table td {
-  padding: 12px 20px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.customer-card:hover {
+  transform: translateY(-5px);
 }
 
-.table th {
-  background-color: #f4f4f4;
-  font-weight: bold;
+.card-content {
+  margin-bottom: 1rem;
+}
+
+.form-name {
+  font-size: 1rem;
+ 
   color: #333;
 }
 
-.table tr:nth-child(even) {
-  background-color: #f9f9f9;
+.form-id {
+  font-size: 0.9rem;
+  color: #777;
 }
 
-.table tr:hover {
-  background-color: #f1f1f1;
+.card-actions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.action-icon {
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.action-icon:hover {
+  color: #0056b3;
 }
 
 .no-data {

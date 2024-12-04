@@ -166,19 +166,19 @@
   .tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted rgb(50, 49, 49);
   }
   
   .tooltip .tooltiptext {
     visibility: hidden;
     width: 120px;
-    background-color: black;
-    color: #fff;
+    background-color: rgb(96, 91, 91);
+    color: white;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
      position: absolute;
     z-index: 1;
+    opacity: 0.5;
   }
   
   .tooltip:hover .tooltiptext {
@@ -290,4 +290,16 @@
   width: 100%;
   font-size: 20px;
   color: #ccc;
+}
+
+
+.formFieldLabel{
+
+  cursor: pointer;
+  color: #007BFF;
+  margin: 10px 0px;
+  font-size: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
 }

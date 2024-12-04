@@ -174,14 +174,12 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                 ) : (
                   <label
                     onClick={() => setEditLabelIndex(index)}
-                    className="tooltip"
-                    style={{
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                      color: "#007BFF",
-                    }}
+                    className="tooltip "
+                   
                   >
-                    {field.label}
+                 <span className="formFieldLabel">
+                     {field.label}
+                     </span>
                     <span className="tooltiptext">change label</span>
                   </label>
                 )}

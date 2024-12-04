@@ -28,50 +28,37 @@ function CustomerList() {
   };
 
   const handleEdit = (formId) => {
-    console.log(formId)
     navigate(`/formBuilder/${formId}`);
-
   };
 
   return (
     <div className="customer-list-container">
-      <h1 className="customer-list-title">Customer List</h1>
+      <h1 className="customer-list-title">Form List</h1>
       <div className="customer-list">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Form Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customerData.length > 0 ? (
-              customerData.map((form, formIndex) => (
-                <tr key={form.id}>
-                  <td>{formIndex + 1}</td> {/* Display the index */}
-                  <td>{form.formName}</td> {/* Display formName */}
-                  <td>
-                    <FaEdit
-                      className="action-icon"
-                      onClick={() => handleEdit(form.id)}  
-                    />
-                    <FaTrashAlt
-                      className="action-icon"
-                      onClick={() => handleDelete(form.id)}  
-                    />
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="3" className="no-data">
-                  No data available
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        {customerData.length > 0 ? (
+          customerData.map((form, formIndex) => (
+            <div key={form.id} className="customer-card">
+              <div className="card-content">
+                <h3 className="form-name">{form.formName}</h3>
+             
+              </div>
+              <div className="card-actions">
+                <FaEdit
+                  className="action-icon"
+                  onClick={() => handleEdit(form.id)}  
+                />
+                <FaTrashAlt
+                  className="action-icon"
+                  onClick={() => handleDelete(form.id)}  
+                />
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="no-data">
+            No data available
+          </div>
+        )}
       </div>
     </div>
   );
