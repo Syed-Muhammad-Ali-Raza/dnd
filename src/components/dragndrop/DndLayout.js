@@ -16,8 +16,8 @@ const DndLayout = () => {
       <div style={{ display: 'flex'}}>
      
       <div>
-          <h3> Fields</h3>
-        <div style={{  border: '1px solid #ddd', padding: '20px' , height: '89vh'  ,  width :'270px'}}>
+      
+        <div style={{  border: '1px solid #ddd', padding: '20px' , height: '94vh'  ,  width :'270px'}}>
         
           {formFields.map((field) => (
             <DragItem key={field.id} field={field} droppedFields={droppedFields} />
@@ -27,7 +27,7 @@ const DndLayout = () => {
       
 
         <div style={{ flex: 0 ,  height:"20px" ,  minWidth:'82vw' }}>
-          <h3>Form Builder</h3>
+    
           <DropZone droppedFields={droppedFields} setDroppedFields={setDroppedFields} />
         </div>
       </div>
