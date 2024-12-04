@@ -20,7 +20,7 @@
       "id": 3,
       "type": "text",
       "subtype": "text",
-      "label": "text",
+      "label": "Text",
       "initialValue": "",
       "value": "",
       "position": 0
@@ -28,7 +28,7 @@
     {
       "id": 4,
       "type": "dropdown",
-      "label": "dropdown",
+      "label": "Dropdown",
       "options": ["Opt 1", "Opt 2", "Opt 3"],
       "initialValue": "",
       "value": "",
@@ -37,7 +37,7 @@
     {
       "id": 5,
       "type": "email",
-      "label": " email",
+      "label": " Email",
       "initialValue": "",
       "value": "",
       "position": 0

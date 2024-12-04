@@ -1,0 +1,8 @@
+.drag-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    background: #fafafa;
+    cursor: move;
+    border-radius: 6px;
+}
