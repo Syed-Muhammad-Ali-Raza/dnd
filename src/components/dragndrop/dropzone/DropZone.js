@@ -1,16 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDrop } from "react-dnd";
 import { FaTrashAlt, FaEdit, FaCog } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { addField, updateField, resetForm } from "../../redux/FormSlice"; // Adjust path as needed
+import { addField, updateField, resetForm, setFormFields } from "../../redux/FormSlice"; // Adjust path as needed
 import "./DropZone.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate, useParams } from "react-router-dom";
 
-import { useNavigate } from "react-router-dom";
 const DropZone = ({ droppedFields, setDroppedFields }) => {
   const dispatch = useDispatch();
   const formFields = useSelector((state) => state.form.formFields);
   const [editLabelIndex, setEditLabelIndex] = useState(null);
   const [editPlaceholderIndex, setEditPlaceholderIndex] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formName, setFormName] = useState("");
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingFormId, setEditingFormId] = useState(null);
+  const { formId } = useParams(); 
+  console.log(formId,"formId")
+  const navigate = useNavigate();
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "FORM_FIELD",
@@ -19,7 +28,30 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       isOver: !!monitor.isOver(),
     }),
   }));
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (formId) {
+      const existingForms = JSON.parse(localStorage.getItem("formsData") || "[]");
+      const formToEdit = existingForms.find(form => form.id.toString() === formId);
+      
+      if (formToEdit) {
+        setIsEditMode(true);
+        setEditingFormId(formToEdit.id);
+        setFormName(formToEdit.formName);
+        
+        const fieldsArray = Object.entries(formToEdit.data).map(([id, fieldData]) => ({
+          id,
+          ...fieldData
+        }));
+
+        dispatch(setFormFields(fieldsArray));
+        
+        const droppedFieldsSet = new Set(fieldsArray.map(field => field.id));
+        setDroppedFields(droppedFieldsSet);
+      }
+    }
+  }, [formId, dispatch]);
+
   const addFieldToForm = (field) => {
     if (!droppedFields.has(field.id)) {
       dispatch(addField(field)); 
@@ -28,7 +60,11 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
   };
 
   const saveForm = () => {
-    // Get the current form data
+    if (!formName.trim()) {
+      alert("Please enter a form name.");
+      return;
+    }
+
     const formData = formFields.reduce((acc, field) => {
       acc[field.id] = {
         label: field.label,
@@ -41,25 +77,34 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       };
       return acc;
     }, {});
-  
-    // Generate a unique form ID (can use Date.now() or a UUID)
-    const formId = Date.now(); // Unique ID for each form based on timestamp
-  
-    // Fetch the existing forms array from localStorage, if it exists
+
     const existingForms = JSON.parse(localStorage.getItem("formsData") || "[]");
-  
-    const updatedForms = [
-      ...existingForms,
-      { id: formId, data: formData }, 
-    ];
-  
-    localStorage.setItem("formsData", JSON.stringify(updatedForms));
-  
-    console.log("Saved Form Data:", formData);
-  
+
+    if (isEditMode && editingFormId) {
+      const updatedForms = existingForms.map(form => 
+        form.id === editingFormId 
+          ? { id: editingFormId, formName, data: formData }
+          : form
+      );
+
+      localStorage.setItem("formsData", JSON.stringify(updatedForms));
+      console.log("Updated Form Data:", { id: editingFormId, formName, data: formData });
+    } else {
+
+      const newFormId = Date.now();
+      const updatedForms = [
+        ...existingForms,
+        { id: newFormId, formName, data: formData },
+      ];
+
+      localStorage.setItem("formsData", JSON.stringify(updatedForms));
+      console.log("Saved Form Data:", { id: newFormId, formName, data: formData });
+    }
+
+    setIsModalOpen(false);
+    setFormName("");
     navigate("/customer");
   };
-  
 
   const handleDeleteOption = (fieldIndex, optionIndex) => {
     const updatedOptions = formFields[fieldIndex].options.filter(
@@ -75,26 +120,28 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
   };
 
   const resetFormState = () => {
-    dispatch(resetForm()); // Dispatch resetForm action
+    dispatch(resetForm());
     setDroppedFields(new Set());
+    setFormName("");
+    setIsEditMode(false);
+    setEditingFormId(null);
   };
 
   return (
     <>
+    <ToastContainer />
       <div
         ref={drop}
-        
         style={{
-          border: "2px dashed #aaa",
+          border: " #aaa",
           padding: "20px",
-          height: "500px",
+          height: "571px",
           background: isOver ? "#f0f8ff" : "#fafafa",
           overflowY: "auto"
-
         }}
       >
         {formFields.length === 0 ? (
-          <p>Drag fields here...</p>
+          <p className="noDataDrag">Drag fields here...</p>
         ) : (
           formFields.map((field, index) => (
             <div
@@ -128,14 +175,12 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                 ) : (
                   <label
                     onClick={() => setEditLabelIndex(index)}
-                    className="tooltip"
-                    style={{
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                      color: "#007BFF",
-                    }}
+                    className="tooltip "
+                   
                   >
-                    {field.label}
+                 <span className="formFieldLabel">
+                     {field.label}
+                     </span>
                     <span className="tooltiptext">change label</span>
                   </label>
                 )}
@@ -331,14 +376,48 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
         )}
       </div>
 
-      <div>
-        <button onClick={saveForm} style={{ padding: "10px", backgroundColor: "#28a745", color: "white" }}>
-          Save Form
+      <div className="formBuilderBtn">
+        <button
+          onClick={() => setIsModalOpen(true)} className="UpdateSaveBtn"
+         
+        >
+          {isEditMode ? "Update Form" : "Save Form"}
         </button>
-        <button onClick={resetFormState} style={{ padding: "10px", backgroundColor: "#dc3545", color: "white" }}>
+        <button 
+          onClick={resetFormState}  className="ResetBtn"
+        >
           Reset Form
         </button>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="modal-container"
+       
+        >
+          <h3>{isEditMode ? "Update Form Name" : "Enter Form Name"}</h3>
+          <input
+            type="text"
+            className="InputFieldModal"
+            value={formName}
+            onChange={(e) => setFormName(e.target.value)}
+            placeholder="Form Name"
+            
+          />
+          <div style={{ display: "flex", justifyContent: "center" , gap:"20px" }}>
+            <button  onClick={saveForm}  className="saveBtnModal"
+             
+            >
+              {isEditMode ? "Update" : "Save"}
+            </button>
+            <button  onClick={() => setIsModalOpen(false)} className="cancelBtnModal"
+            
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

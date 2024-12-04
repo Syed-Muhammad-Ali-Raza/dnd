@@ -3,12 +3,12 @@
   border: 2px dashed #aaa;
   padding: 20px;
   min-height: 300px;
-  background-color: #fafafa;
+  background-color: #c1bcbc;
   transition: background-color 0.3s ease;
 }
 
 .drop-zone.is-over {
-  background-color: #f0f8ff;
+  background-color: #c1bcbc;
 }
 
 .drop-zone p {
@@ -149,4 +149,13 @@
 }
 input{
   padding:  5px 15px;
+}
+
+
+h3{
+  display: flex;
+  justify-content: center;
+  font-weight: 400;
+  font-size: 1.5rem;
+  margin: 5px 0px;
 }

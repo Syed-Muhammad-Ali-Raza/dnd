@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  formFields: [], // Holds the forms data
+  formName: "", 
+  formFields: [], 
   isSubmitting: false,
   errors: {},
 };
@@ -10,6 +11,9 @@ const FormSlice = createSlice({
   name: "form",
   initialState,
   reducers: {
+    setFormName: (state, action) => {
+      state.formName = action.payload; 
+    },
     addField: (state, action) => {
       const field = action.payload;
       if (!state.formFields.some((f) => f.id === field.id)) {
@@ -33,20 +37,54 @@ const FormSlice = createSlice({
     },
     setErrors: (state, action) => {
       state.errors = action.payload;
+    },  
+    setFormFields: (state, action) => {
+      state.formFields = action.payload;
     },
+    
+    
     resetForm: (state) => {
-      state.formFields = [];
+      state.formName = ""; 
+      state.formFields = []; 
     },
     deleteField: (state, action) => {
       const { id } = action.payload;
       state.formFields = state.formFields.filter((field) => field.id !== id);
 
-      // Sync with localStorage after deleting
-      localStorage.setItem('formsData', JSON.stringify(state.formFields));
+      localStorage.setItem(
+        "formsData",
+        JSON.stringify({
+          formName: state.formName,
+          formFields: state.formFields,
+        })
+      );
+    },
+    saveForm: (state, action) => {
+      const { formName, formFields } = action.payload;
+      state.formName = formName;
+      state.formFields = formFields;
+
+      localStorage.setItem(
+        "formsData",
+        JSON.stringify({
+          formName: state.formName,
+          formFields: state.formFields,
+        })
+      );
     },
   },
 });
 
-export const { addField, updateField, setSubmitting, setErrors, resetForm, deleteField } = FormSlice.actions;
+export const {
+  setFormName,
+  addField,
+  updateField,
+  setSubmitting,
+  setErrors,
+  resetForm,
+  deleteField,
+  saveForm,
+  setFormFields
+} = FormSlice.actions;
 
 export default FormSlice.reducer;

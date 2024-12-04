@@ -15,7 +15,7 @@ li {
 a ,  Link {
 
     text-decoration: none;
-    color: black;
+    color: white;
     font-size: 15px;
    
     padding: 10px;
@@ -25,5 +25,5 @@ a ,  Link {
 
 
 .header-main{
-    background-color: lightblue;
+    background-color: #5a5f61;
 }

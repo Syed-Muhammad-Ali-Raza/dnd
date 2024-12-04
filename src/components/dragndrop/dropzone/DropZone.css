@@ -1,4 +1,3 @@
-/* Modern, Clean DropZone Styles */
 :root {
     --primary-color: #3498db;
     --secondary-color: #2ecc71;
@@ -143,7 +142,6 @@
     transform: translateY(-2px);
   }
   
-  /* Responsive Adjustments */
   @media (max-width: 600px) {
     .dropzone-container {
       padding: 16px;
@@ -167,22 +165,143 @@
   .tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted rgb(50, 49, 49);
   }
   
   .tooltip .tooltiptext {
     visibility: hidden;
     width: 120px;
-    background-color: black;
-    color: #fff;
+    background-color: rgb(96, 91, 91);
+    color: white;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-      position: absolute;
+     position: absolute;
     z-index: 1;
+    opacity: 0.5;
   }
   
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
 
+  .saveBtnModal{
+    padding: 11px 24px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 20px;
+
+  cursor: pointer;
+  }
+.cancelBtnModal{
+  padding: 11px 24px;
+  background-color: #dc3545;
+  color: white;
+ 
+  border-radius: 20px;
+   border: none;
+  cursor: pointer;
+}
+
+.InputFieldModal{
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+  z-index: 1000;
+  gap: 37px;
+  min-height: 320px; 
+  min-width: 400px; 
+  border-radius: 12px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+}
+
+.ResetBtn {
+  padding: 12px 24px; 
+  background-color: #dc3545;
+  color: white;
+  border-radius: 24px; 
+  border: none;
+  cursor: pointer;
+  margin-right: 50px;
+  transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+.ResetBtn:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+.UpdateSaveBtn {
+  padding: 12px 24px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 24px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.UpdateSaveBtn:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.formBuilderBtn {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 20px; 
+  margin-top: 20px;
+  
+}
+
+.modal-container input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-container input:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.noDataDrag{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  font-size: 20px;
+  color: #ccc;
+}
+
+
+.formFieldLabel{
+
+  cursor: pointer;
+  color: #007BFF;
+  margin: 10px 0px;
+  font-size: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+}
