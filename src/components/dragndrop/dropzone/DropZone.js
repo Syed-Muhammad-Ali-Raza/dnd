@@ -4,7 +4,8 @@ import { FaTrashAlt, FaEdit, FaCog } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { addField, updateField, resetForm, setFormFields } from "../../redux/FormSlice"; // Adjust path as needed
 import "./DropZone.css";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate, useParams } from "react-router-dom";
 
 const DropZone = ({ droppedFields, setDroppedFields }) => {
@@ -16,7 +17,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
   const [formName, setFormName] = useState("");
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingFormId, setEditingFormId] = useState(null);
-
+  const updateToast = () => toast("Updated Successfully");
   const { formId } = useParams(); 
   console.log(formId,"formId")
   const navigate = useNavigate();
@@ -117,6 +118,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
     const updatedOptions = [...formFields[fieldIndex].options];
     updatedOptions[optionIndex] = newValue;
     dispatch(updateField({ id: formFields[fieldIndex].id, name: "options", value: updatedOptions }));
+    updateToast();
   };
 
   const resetFormState = () => {
@@ -129,6 +131,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
 
   return (
     <>
+    <ToastContainer />
       <div
         ref={drop}
         style={{
