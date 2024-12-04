@@ -380,7 +380,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
       <div className="formBuilderBtn">
         <button
           onClick={() => setIsModalOpen(true)} className="UpdateSaveBtn"
-          style={{ padding: "10px", backgroundColor: "#28a745", color: "white" }}
+         
         >
           {isEditMode ? "Update Form" : "Save Form"}
         </button>
