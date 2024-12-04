@@ -135,6 +135,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
         style={{
           border: " #aaa",
           padding: "20px",
+           minWidth:'74rem',
           height: "571px",
           background: isOver ? "#f0f8ff" : "#fafafa",
           overflowY: "auto"
@@ -150,6 +151,7 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                 marginBottom: "20px",
                 border: "1px solid #ccc",
                 padding: "10px",
+                minWidth:'74rem'
               }}
             >
               <div
