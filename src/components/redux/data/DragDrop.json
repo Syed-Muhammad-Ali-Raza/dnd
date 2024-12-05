@@ -44,7 +44,7 @@
   },
   {
     "id": 6,
-    "type": "column",
+    "type": "column1",
     "label": "1 Column",
     "columns": 1,
     "fields": [],
@@ -52,7 +52,7 @@
   },
   {
     "id": 7,
-    "type": "column",
+    "type": "column2",
     "label": "2 Column",
     "columns": 2,
     "fields": [[], []],
@@ -60,7 +60,7 @@
   },
   {
     "id": 8,
-    "type": "column",
+    "type": "column3",
     "label": "3 Column",
     "columns": 3,
     "fields": [[], [], []],

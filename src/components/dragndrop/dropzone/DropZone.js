@@ -373,9 +373,60 @@ const DropZone = ({ droppedFields, setDroppedFields }) => {
                   />
                 </div>
               )}
+
+
+{/* --------------------------column 1 -------------------------- */}
+{["column1"].includes(field.type) &&(
+  <div>
+                    One Column
+                  </div>
+)}
+             
+
+
+{/* --------------------------column 2 -------------------------- */}       
+
+{["column2"].includes(field.type) &&(
+  <div style={{display:"flex" , justifyContent:"space-between"}}>
+  <div> 
+    1
+   </div>
+   <div> 
+    2
+   </div>
+</div>
+)}         
+                {/* --------------------------column 3 --------------------------  */}
+
+
+                {["column3"].includes(field.type) &&(
+                        <div style={{display:"flex", justifyContent:"space-between"}}>
+                      
+                        <div> 
+                          1
+                         </div>
+                         <div> 
+                          2
+                         </div>
+                         <div> 
+                          3
+                         </div>
+                      </div>
+                )}
+
+
+
+
+
             </div>
           ))
         )}
+
+
+
+
+
+
       </div>
 
       <div className="formBuilderBtn">
