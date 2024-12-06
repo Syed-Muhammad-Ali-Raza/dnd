@@ -1,0 +1,64 @@
+.app {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  .fields-container {
+    margin-bottom: 30px;
+  }
+  
+  .field-item {
+    padding: 10px;
+    margin: 5px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .layout-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .column-layout {
+    margin-bottom: 20px;
+  }
+  
+  .column {
+    display: flex;
+    gap: 10px;
+    border: 2px dashed #ccc;
+    padding: 10px;
+  }
+  
+  .one-column .column-column {
+    width: 100%;
+  }
+  
+  .two-column .column-column {
+    width: 48%;
+  }
+  
+  .three-column .column-column {
+    width: 31%;
+  }
+  
+  .dropped-field {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+  
+  .column-column {
+    min-height: 100px;
+    border: 1px solid #ddd;
+    background-color: #f1f1f1;
+  }
+  
+  .column-column:hover {
+    background-color: #dcdcdc;
+  }
+  
